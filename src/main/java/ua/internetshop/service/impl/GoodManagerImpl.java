@@ -25,4 +25,12 @@ public class GoodManagerImpl implements GoodManager {
 		return goodDao.getAllGoods();
 	}
 
+	public Good getGoodById(Integer id) {
+		return goodDao.getGoodById(id);
+	}
+
+	public void delete(Good good) {
+		goodDao.delete(good);
+	}
+
 }

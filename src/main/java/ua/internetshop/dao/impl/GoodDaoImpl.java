@@ -31,4 +31,12 @@ public class GoodDaoImpl implements GoodDao {
 		em.persist(good);
 	}
 
+	public Good getGoodById(Integer id) {
+		return em.find(Good.class, id);
+	}
+
+	public void delete(Good good) {
+		em.remove(em.merge(good));
+	}
+
 }

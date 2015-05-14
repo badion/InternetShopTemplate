@@ -10,4 +10,8 @@ public interface GoodManager {
 
 	List<Good> getAllGoods();
 
+	Good getGoodById(Integer id);
+
+	void delete(Good good);
+
 }

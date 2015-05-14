@@ -2,12 +2,17 @@ package ua.internetshop.model;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name = "goods")
@@ -35,9 +40,18 @@ public class Good implements Serializable {
 	@Column(name = "price")
 	private Double price;
 
-//	@ManyToOne(cascade = { CascadeType.MERGE })
-	// @JoinColumn(name = "id_category_product")
-//	private Category category;
+	@ManyToOne(cascade = { CascadeType.MERGE })
+	@JoinColumn(name = "category_id")
+	private Category category;
+
+	@JsonBackReference
+	public Category getCategory() {
+		return category;
+	}
+
+	public void setCategory(Category category) {
+		this.category = category;
+	}
 
 	public Integer getId() {
 		return id;
@@ -86,12 +100,4 @@ public class Good implements Serializable {
 	public void setPrice(Double price) {
 		this.price = price;
 	}
-
-	@Override
-	public String toString() {
-		return "Good [id=" + id + ", name=" + name + ", description="
-				+ description + ", shortDescription=" + shortDescription
-				+ ", quantity=" + quantity + ", price=" + price;
-	}
-
 }

@@ -10,4 +10,8 @@ public interface GoodDao {
 
 	List<Good> getAllGoods();
 
+	Good getGoodById(Integer id);
+	
+	void delete(Good id);
+
 }

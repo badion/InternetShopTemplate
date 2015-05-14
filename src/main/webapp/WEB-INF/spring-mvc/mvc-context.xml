@@ -10,8 +10,11 @@
         http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
 
 	<context:component-scan base-package="ua.internetshop.controller"></context:component-scan>
-	
+	<context:component-scan base-package="ua.internetshop.rest.controller"></context:component-scan>
+
 	<mvc:annotation-driven />
+
+	<mvc:resources location="/resource/" mapping="/static/**" />
 
 	<bean
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -23,4 +26,8 @@
 		</property>
 	</bean>
 
+	<bean class="org.springframework.context.support.ResourceBundleMessageSource"
+		id="messageSource">
+		<property name="basename" value="messages" />
+	</bean>
 </beans>
