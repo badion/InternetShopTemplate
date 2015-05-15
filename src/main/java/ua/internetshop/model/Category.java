@@ -23,14 +23,13 @@ public class Category implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
-	private Integer id;
+	@Column(name = "id", columnDefinition = "bigserial")
+	private Long id;
 
 	@Column(name = "name")
 	private String name;
 
-	@OneToMany(mappedBy = "category", fetch = FetchType.EAGER, cascade = {
-			CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH }, orphanRemoval = true)
+	@OneToMany(mappedBy = "category", fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST })
 	private List<Good> goods;
 
 	@JsonManagedReference
@@ -42,11 +41,11 @@ public class Category implements Serializable {
 		this.goods = goods;
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -54,13 +53,21 @@ public class Category implements Serializable {
 		return name;
 	}
 
+	@Override
+	public String toString() {
+		return "Category [id=" + id + ", name=" + name + ", goods=" + goods
+				+ "]";
+	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
 
 	public void addGood(Good good) {
-		if (!goods.contains(good)) {
-			goods.add(good);
-		}
+		this.goods.add(good);
+		good.setCategory(this);
+		// if (!goods.contains(good)) {
+		// goods.add(good);
+		// }
 	}
 }

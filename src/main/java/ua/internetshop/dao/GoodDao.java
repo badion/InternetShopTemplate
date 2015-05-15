@@ -6,12 +6,14 @@ import ua.internetshop.model.Good;
 
 public interface GoodDao {
 
-	void insertGood(Good good);
+	void add(Good good);
+
+	Good saveOrUpdate(Good good);
 
 	List<Good> getAllGoods();
 
-	Good getGoodById(Integer id);
-	
+	Good getGoodById(Long id);
+
 	void delete(Good id);
 
 }

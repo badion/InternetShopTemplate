@@ -16,21 +16,27 @@ public class GoodManagerImpl implements GoodManager {
 	@Autowired
 	private GoodDao goodDao;
 
-	@Transactional
-	public void insertGood(Good good) {
-		goodDao.insertGood(good);
-	}
-
 	public List<Good> getAllGoods() {
 		return goodDao.getAllGoods();
 	}
 
-	public Good getGoodById(Integer id) {
+	public Good getGoodById(Long id) {
 		return goodDao.getGoodById(id);
 	}
 
+	@Transactional
 	public void delete(Good good) {
 		goodDao.delete(good);
+	}
+
+	@Override
+	public void add(Good good) {
+		goodDao.add(good);
+	}
+
+	@Override
+	public Good saveOrUpdate(Good good) {
+		return goodDao.saveOrUpdate(good);
 	}
 
 }

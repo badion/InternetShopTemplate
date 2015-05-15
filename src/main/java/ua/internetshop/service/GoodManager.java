@@ -6,11 +6,13 @@ import ua.internetshop.model.Good;
 
 public interface GoodManager {
 
-	void insertGood(Good good);
+	void add(Good good);
+
+	Good saveOrUpdate(Good good);
 
 	List<Good> getAllGoods();
 
-	Good getGoodById(Integer id);
+	Good getGoodById(Long id);
 
 	void delete(Good good);
 
