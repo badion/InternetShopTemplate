@@ -10,7 +10,6 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import ua.internetshop.dao.GoodDao;
 import ua.internetshop.model.Good;
@@ -29,11 +28,10 @@ public class GoodDaoImpl implements GoodDao {
 		return em.createQuery(cq).getResultList();
 	}
 
-	@Transactional(readOnly = false)
 	public Good saveOrUpdate(Good good) {
 		if (good != null) {
+			System.out.println(good);
 			em.merge(good);
-			em.flush();
 		}
 		return good;
 	}
@@ -42,16 +40,19 @@ public class GoodDaoImpl implements GoodDao {
 		em.remove(em.merge(good));
 	}
 
-	@Transactional(readOnly = false)
 	@Override
 	public void add(Good good) {
 		em.persist(good);
-		em.flush();
 	}
 
 	@Override
 	public Good getGoodById(Long id) {
 		return em.find(Good.class, id);
+	}
+
+	@Override
+	public void refresh(Good good) {
+		em.refresh(good);
 	}
 
 }

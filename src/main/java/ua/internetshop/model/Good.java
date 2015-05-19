@@ -2,7 +2,6 @@ package ua.internetshop.model;
 
 import java.io.Serializable;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,9 +11,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
@@ -26,7 +22,7 @@ public class Good implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", columnDefinition = "bigserial")
+	@Column(name = "id", columnDefinition = "bigint")
 	private Long id;
 
 	// @NotNull
@@ -51,27 +47,13 @@ public class Good implements Serializable {
 	@JoinColumn(name = "category_id")
 	private Category category;
 
+	public void setCategory(Category category) {
+		this.category = category;
+	}
+
 	@JsonBackReference
 	public Category getCategory() {
 		return category;
-	}
-
-	public void setCategory(Category category) {
-		if (sameCategory(category)) {
-			return;
-		}
-		Category oldCategory = this.category;
-		this.category = category;
-
-		if (oldCategory != null) {
-			category.addGood(this);
-		}
-		this.category = category;
-	}
-
-	private boolean sameCategory(Category newCategory) {
-		return category == null ? newCategory == null : category
-				.equals(newCategory);
 	}
 
 	public Long getId() {
@@ -120,6 +102,79 @@ public class Good implements Serializable {
 
 	public void setPrice(Double price) {
 		this.price = price;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((category == null) ? 0 : category.hashCode());
+		result = prime * result
+				+ ((description == null) ? 0 : description.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((price == null) ? 0 : price.hashCode());
+		result = prime * result
+				+ ((quantity == null) ? 0 : quantity.hashCode());
+		result = prime
+				* result
+				+ ((shortDescription == null) ? 0 : shortDescription.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Good other = (Good) obj;
+		if (category == null) {
+			if (other.category != null)
+				return false;
+		} else if (!category.equals(other.category))
+			return false;
+		if (description == null) {
+			if (other.description != null)
+				return false;
+		} else if (!description.equals(other.description))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (price == null) {
+			if (other.price != null)
+				return false;
+		} else if (!price.equals(other.price))
+			return false;
+		if (quantity == null) {
+			if (other.quantity != null)
+				return false;
+		} else if (!quantity.equals(other.quantity))
+			return false;
+		if (shortDescription == null) {
+			if (other.shortDescription != null)
+				return false;
+		} else if (!shortDescription.equals(other.shortDescription))
+			return false;
+		return true;
+	}
+	
+	@Override
+	public String toString() {
+		return "Good [id=" + id + ", name=" + name + ", description="
+				+ description + ", shortDescription=" + shortDescription
+				+ ", quantity=" + quantity + ", price=" + price + "]";
 	}
 
 }

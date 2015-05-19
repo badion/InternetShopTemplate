@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import javax.transaction.Transactional;
 
 import ua.internetshop.dao.GoodDao;
 import ua.internetshop.model.Good;
@@ -29,14 +29,19 @@ public class GoodManagerImpl implements GoodManager {
 		goodDao.delete(good);
 	}
 
-	@Override
+	@Transactional
 	public void add(Good good) {
 		goodDao.add(good);
 	}
 
-	@Override
+	@Transactional
 	public Good saveOrUpdate(Good good) {
 		return goodDao.saveOrUpdate(good);
+	}
+
+	@Override
+	public void refresh(Good good) {
+		goodDao.refresh(good);
 	}
 
 }

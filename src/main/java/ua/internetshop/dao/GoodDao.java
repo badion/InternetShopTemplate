@@ -16,4 +16,5 @@ public interface GoodDao {
 
 	void delete(Good id);
 
+	void refresh(Good good);
 }

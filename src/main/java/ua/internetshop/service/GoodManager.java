@@ -15,5 +15,7 @@ public interface GoodManager {
 	Good getGoodById(Long id);
 
 	void delete(Good good);
+	
+	void refresh(Good good);
 
 }
