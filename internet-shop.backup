@@ -1,0 +1,397 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 9.1.3
+-- Dumped by pg_dump version 9.1.3
+-- Started on 2015-05-19 18:32:01
+
+SET statement_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+--
+-- TOC entry 169 (class 3079 OID 11639)
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- TOC entry 1895 (class 0 OID 0)
+-- Dependencies: 169
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- TOC entry 165 (class 1259 OID 43480)
+-- Dependencies: 5
+-- Name: category_of_products; Type: TABLE; Schema: public; Owner: admin; Tablespace: 
+--
+
+CREATE TABLE category_of_products (
+    id bigint NOT NULL,
+    name character varying(255)
+);
+
+
+ALTER TABLE public.category_of_products OWNER TO admin;
+
+--
+-- TOC entry 164 (class 1259 OID 43478)
+-- Dependencies: 165 5
+-- Name: category_of_products_id_seq; Type: SEQUENCE; Schema: public; Owner: admin
+--
+
+CREATE SEQUENCE category_of_products_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.category_of_products_id_seq OWNER TO admin;
+
+--
+-- TOC entry 1896 (class 0 OID 0)
+-- Dependencies: 164
+-- Name: category_of_products_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: admin
+--
+
+ALTER SEQUENCE category_of_products_id_seq OWNED BY category_of_products.id;
+
+
+--
+-- TOC entry 1897 (class 0 OID 0)
+-- Dependencies: 164
+-- Name: category_of_products_id_seq; Type: SEQUENCE SET; Schema: public; Owner: admin
+--
+
+SELECT pg_catalog.setval('category_of_products_id_seq', 10, true);
+
+
+--
+-- TOC entry 162 (class 1259 OID 43132)
+-- Dependencies: 5
+-- Name: delivery_type; Type: TABLE; Schema: public; Owner: admin; Tablespace: 
+--
+
+CREATE TABLE delivery_type (
+    id bigint NOT NULL,
+    title character varying(255),
+    description text
+);
+
+
+ALTER TABLE public.delivery_type OWNER TO admin;
+
+--
+-- TOC entry 168 (class 1259 OID 43490)
+-- Dependencies: 5
+-- Name: goods; Type: TABLE; Schema: public; Owner: admin; Tablespace: 
+--
+
+CREATE TABLE goods (
+    id bigint NOT NULL,
+    description character varying(255),
+    name character varying(255),
+    price double precision,
+    quantity integer,
+    short_description character varying(255),
+    category_id bigint NOT NULL
+);
+
+
+ALTER TABLE public.goods OWNER TO admin;
+
+--
+-- TOC entry 167 (class 1259 OID 43488)
+-- Dependencies: 5 168
+-- Name: goods_category_id_seq; Type: SEQUENCE; Schema: public; Owner: admin
+--
+
+CREATE SEQUENCE goods_category_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.goods_category_id_seq OWNER TO admin;
+
+--
+-- TOC entry 1898 (class 0 OID 0)
+-- Dependencies: 167
+-- Name: goods_category_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: admin
+--
+
+ALTER SEQUENCE goods_category_id_seq OWNED BY goods.category_id;
+
+
+--
+-- TOC entry 1899 (class 0 OID 0)
+-- Dependencies: 167
+-- Name: goods_category_id_seq; Type: SEQUENCE SET; Schema: public; Owner: admin
+--
+
+SELECT pg_catalog.setval('goods_category_id_seq', 1, false);
+
+
+--
+-- TOC entry 166 (class 1259 OID 43486)
+-- Dependencies: 168 5
+-- Name: goods_id_seq; Type: SEQUENCE; Schema: public; Owner: admin
+--
+
+CREATE SEQUENCE goods_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.goods_id_seq OWNER TO admin;
+
+--
+-- TOC entry 1900 (class 0 OID 0)
+-- Dependencies: 166
+-- Name: goods_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: admin
+--
+
+ALTER SEQUENCE goods_id_seq OWNED BY goods.id;
+
+
+--
+-- TOC entry 1901 (class 0 OID 0)
+-- Dependencies: 166
+-- Name: goods_id_seq; Type: SEQUENCE SET; Schema: public; Owner: admin
+--
+
+SELECT pg_catalog.setval('goods_id_seq', 85, true);
+
+
+--
+-- TOC entry 161 (class 1259 OID 43126)
+-- Dependencies: 5
+-- Name: order; Type: TABLE; Schema: public; Owner: admin; Tablespace: 
+--
+
+CREATE TABLE "order" (
+    id bigint NOT NULL,
+    fname character varying(255),
+    email character varying(255) NOT NULL,
+    id_delivery_type bigint NOT NULL,
+    phone_number bigint,
+    city character varying(255)
+);
+
+
+ALTER TABLE public."order" OWNER TO admin;
+
+--
+-- TOC entry 163 (class 1259 OID 43159)
+-- Dependencies: 5
+-- Name: order_goods; Type: TABLE; Schema: public; Owner: admin; Tablespace: 
+--
+
+CREATE TABLE order_goods (
+    id_order bigint NOT NULL,
+    id_good bigint NOT NULL
+);
+
+
+ALTER TABLE public.order_goods OWNER TO admin;
+
+--
+-- TOC entry 1871 (class 2604 OID 43483)
+-- Dependencies: 165 164 165
+-- Name: id; Type: DEFAULT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY category_of_products ALTER COLUMN id SET DEFAULT nextval('category_of_products_id_seq'::regclass);
+
+
+--
+-- TOC entry 1872 (class 2604 OID 43493)
+-- Dependencies: 168 166 168
+-- Name: id; Type: DEFAULT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY goods ALTER COLUMN id SET DEFAULT nextval('goods_id_seq'::regclass);
+
+
+--
+-- TOC entry 1873 (class 2604 OID 43524)
+-- Dependencies: 168 167 168
+-- Name: category_id; Type: DEFAULT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY goods ALTER COLUMN category_id SET DEFAULT nextval('goods_category_id_seq'::regclass);
+
+
+--
+-- TOC entry 1888 (class 0 OID 43480)
+-- Dependencies: 165
+-- Data for Name: category_of_products; Type: TABLE DATA; Schema: public; Owner: admin
+--
+
+COPY category_of_products (id, name) FROM stdin;
+1	Cars
+9	Phones
+10	321
+\.
+
+
+--
+-- TOC entry 1886 (class 0 OID 43132)
+-- Dependencies: 162
+-- Data for Name: delivery_type; Type: TABLE DATA; Schema: public; Owner: admin
+--
+
+COPY delivery_type (id, title, description) FROM stdin;
+1	Самовывоз	\N
+2	Новая почта	\N
+\.
+
+
+--
+-- TOC entry 1889 (class 0 OID 43490)
+-- Dependencies: 168
+-- Data for Name: goods; Type: TABLE DATA; Schema: public; Owner: admin
+--
+
+COPY goods (id, description, name, price, quantity, short_description, category_id) FROM stdin;
+76	123	123	321	31312	312	1
+78	3213	321	321	32132131	12321	1
+80	43243	414	242	234	24	1
+81	23	авфі	13	3	31	9
+82	32312	231	123	3	31	9
+83	3421	23545432	43124312	34214312	314321	1
+85	321	авфі	13	132	32	9
+\.
+
+
+--
+-- TOC entry 1885 (class 0 OID 43126)
+-- Dependencies: 161
+-- Data for Name: order; Type: TABLE DATA; Schema: public; Owner: admin
+--
+
+COPY "order" (id, fname, email, id_delivery_type, phone_number, city) FROM stdin;
+1	Vitalii	badioN@bigmir.net	1	636228927	Kyiv
+\.
+
+
+--
+-- TOC entry 1887 (class 0 OID 43159)
+-- Dependencies: 163
+-- Data for Name: order_goods; Type: TABLE DATA; Schema: public; Owner: admin
+--
+
+COPY order_goods (id_order, id_good) FROM stdin;
+\.
+
+
+--
+-- TOC entry 1879 (class 2606 OID 43485)
+-- Dependencies: 165 165
+-- Name: category_of_products_pkey; Type: CONSTRAINT; Schema: public; Owner: admin; Tablespace: 
+--
+
+ALTER TABLE ONLY category_of_products
+    ADD CONSTRAINT category_of_products_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 1881 (class 2606 OID 43499)
+-- Dependencies: 168 168
+-- Name: goods_pkey; Type: CONSTRAINT; Schema: public; Owner: admin; Tablespace: 
+--
+
+ALTER TABLE ONLY goods
+    ADD CONSTRAINT goods_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 1875 (class 2606 OID 43141)
+-- Dependencies: 161 161
+-- Name: id_order; Type: CONSTRAINT; Schema: public; Owner: admin; Tablespace: 
+--
+
+ALTER TABLE ONLY "order"
+    ADD CONSTRAINT id_order PRIMARY KEY (id);
+
+
+--
+-- TOC entry 1877 (class 2606 OID 43143)
+-- Dependencies: 162 162
+-- Name: id_order_type; Type: CONSTRAINT; Schema: public; Owner: admin; Tablespace: 
+--
+
+ALTER TABLE ONLY delivery_type
+    ADD CONSTRAINT id_order_type PRIMARY KEY (id);
+
+
+--
+-- TOC entry 1884 (class 2606 OID 43537)
+-- Dependencies: 165 1878 168
+-- Name: fk_1yl047yeiu0emy8v7unohsf0h; Type: FK CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY goods
+    ADD CONSTRAINT fk_1yl047yeiu0emy8v7unohsf0h FOREIGN KEY (category_id) REFERENCES category_of_products(id);
+
+
+--
+-- TOC entry 1882 (class 2606 OID 43182)
+-- Dependencies: 161 162 1876
+-- Name: id_delivery_type; Type: FK CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY "order"
+    ADD CONSTRAINT id_delivery_type FOREIGN KEY (id_delivery_type) REFERENCES delivery_type(id);
+
+
+--
+-- TOC entry 1883 (class 2606 OID 43326)
+-- Dependencies: 161 1874 163
+-- Name: id_order; Type: FK CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY order_goods
+    ADD CONSTRAINT id_order FOREIGN KEY (id_order) REFERENCES "order"(id);
+
+
+--
+-- TOC entry 1894 (class 0 OID 0)
+-- Dependencies: 5
+-- Name: public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+-- Completed on 2015-05-19 18:32:01
+
+--
+-- PostgreSQL database dump complete
+--
+
