@@ -16,7 +16,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 
 import ua.internetshop.model.Category;
-import ua.internetshop.service.CategoryManager;
+import ua.internetshop.repository.CategoryRepository;
 import ua.internetshop.utils.JspNamesUtil;
 import ua.internetshop.utils.UrlRestUtil;
 import ua.internetshop.validator.CategoryValidator;
@@ -37,9 +37,9 @@ public class CategoryListContoller {
 	private static final String CATEGORIES_DELETE_ID = "/categories/delete/{id}";
 
 	private final RestTemplate restTemplate = new RestTemplate();
-	
+
 	@Autowired
-	private CategoryManager categoryManager;
+	private CategoryRepository categoryRepository;
 
 	@Autowired
 	private CategoryValidator categoryValidator;
@@ -68,7 +68,7 @@ public class CategoryListContoller {
 			return JspNamesUtil.CATEGORIES_NEW;
 		} else {
 			model.addAttribute(CATEGORY, category);
-			categoryManager.add(category);
+			categoryRepository.save(category);
 		}
 		return JspNamesUtil.REDIRECT_HOME;
 	}

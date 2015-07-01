@@ -2,6 +2,7 @@ package ua.internetshop.rest.controller;
 
 import java.util.List;
 
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ua.internetshop.exceptions.AbsentCategories;
 import ua.internetshop.exceptions.CategoryInDatabaseIsEmpty;
 import ua.internetshop.model.Category;
-import ua.internetshop.service.CategoryManager;
+import ua.internetshop.repository.CategoryRepository;
 
 @RestController
 @RequestMapping(value = CategoryControllerRest.REST)
@@ -31,11 +32,13 @@ public class CategoryControllerRest {
 	private static final String ACCEPT_APPLICATION_JSON = "accept=application/json";
 
 	@Autowired
-	private CategoryManager categoryManager;
+	private CategoryRepository categoryRepository;
 
 	@RequestMapping(value = CATEGORY, method = RequestMethod.GET, headers = ACCEPT_APPLICATION_JSON)
 	public @ResponseBody List<Category> getAllCategories() {
-		List<Category> categories = categoryManager.getAllCategory();
+		List<Category> categories = (List<Category>) categoryRepository
+				.findAll();
+		Hibernate.initialize(categories);
 		if (categories.isEmpty())
 			throw new AbsentCategories();
 		return categories;
@@ -43,7 +46,7 @@ public class CategoryControllerRest {
 
 	@RequestMapping(value = CATEGORY_ID, method = RequestMethod.GET, headers = ACCEPT_APPLICATION_JSON)
 	public @ResponseBody Category getCategoryById(@PathVariable(ID) Long id) {
-		Category category = categoryManager.getCategoryById(id);
+		Category category = categoryRepository.findOne(id);
 		if (category == null)
 			throw new CategoryInDatabaseIsEmpty(id);
 		return category;
@@ -51,10 +54,10 @@ public class CategoryControllerRest {
 
 	@RequestMapping(value = CATEGORY_DELETE_ID, method = RequestMethod.DELETE)
 	public void delete(@PathVariable(ID) Long categoryId) {
-		Category category = categoryManager.getCategoryById(categoryId);
+		Category category = categoryRepository.findOne(categoryId);
 		if (category == null)
 			throw new CategoryInDatabaseIsEmpty(categoryId);
-		categoryManager.delete(category);
+		categoryRepository.delete(category);
 	}
 
 }

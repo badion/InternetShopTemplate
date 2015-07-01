@@ -19,8 +19,8 @@ import org.springframework.web.servlet.ModelAndView;
 import ua.internetshop.exceptions.AbsentCategories;
 import ua.internetshop.model.Category;
 import ua.internetshop.model.Good;
-import ua.internetshop.service.CategoryManager;
-import ua.internetshop.service.GoodManager;
+import ua.internetshop.repository.CategoryRepository;
+import ua.internetshop.repository.GoodsRepository;
 import ua.internetshop.utils.JspNamesUtil;
 import ua.internetshop.utils.UrlRestUtil;
 import ua.internetshop.validator.GoodValidator;
@@ -51,10 +51,10 @@ public class GoodsByCategoryListGontroller {
 	private static final String CATEGORIES_ID_GOODS_ID_GOOD_DELETE = "/categories/{id}/goods/{idGood}/delete";
 
 	@Autowired
-	private GoodManager goodManager;
+	private GoodsRepository goodRepository;
 
 	@Autowired
-	private CategoryManager categoryManager;
+	private CategoryRepository categoryRepository;
 
 	@Autowired
 	private GoodValidator goodValidator;
@@ -67,7 +67,6 @@ public class GoodsByCategoryListGontroller {
 
 		List<Category> categories = Arrays.asList(restTemplate.getForObject(
 				UrlRestUtil.CATEGORY_ID + id, Category.class));
-
 		if (!categories.isEmpty()) {
 			model.addObject(CATEGORY, categories);
 			model.addObject(GOOD, new Good());
@@ -102,9 +101,9 @@ public class GoodsByCategoryListGontroller {
 								// parameter
 
 			category.getGoods().add(good);
-			categoryManager.saveOrUpdate(category); // add good in
-													// category.getGoods() and
-													// add good in table
+			categoryRepository.save(category); // add good in
+												// category.getGoods() and
+												// add good in table
 
 			model.addAttribute(GOOD, good);
 		}
@@ -114,8 +113,8 @@ public class GoodsByCategoryListGontroller {
 	@RequestMapping(value = CATEGORIES_ID_GOODS_ID_GOOD, method = RequestMethod.GET)
 	public ModelAndView getGoodPage(@PathVariable(ID) Long id,
 			@PathVariable(ID_GOOD) Long idGood, ModelAndView modelAndView) {
-		Good good = goodManager.getGoodById(idGood);
-		Category category = categoryManager.getCategoryById(id);
+		Good good = goodRepository.findOne(idGood);
+		Category category = categoryRepository.findOne(id);
 		modelAndView.addObject(GOOD, good);
 		modelAndView.addObject(CATEGORY, category);
 		modelAndView.setViewName(JspNamesUtil.GOOD_BY_CATEGORY_PAGE);
@@ -127,7 +126,7 @@ public class GoodsByCategoryListGontroller {
 			@PathVariable(ID_GOOD) Long idGood, Model model) {
 		restTemplate.delete(UrlRestUtil.LIST_OF_CATEGORIES + id + GOODS
 				+ idGood + DELETE);
-		model.addAttribute("ca", categoryManager.getCategoryById(id));
+		model.addAttribute("ca", categoryRepository.findOne(id));
 		return JspNamesUtil.REDIRECT_CATEGORIES + id + GOODS;
 	}
 }
