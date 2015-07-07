@@ -1,7 +1,9 @@
 package ua.internetshop.model;
 
 import java.io.Serializable;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -43,6 +46,9 @@ public class Good implements Serializable {
 	@Column(name = "price")
 	private Double price;
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	private ShoppingCart shoppingCart;
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "category_id")
 	private Category category;
@@ -127,6 +133,8 @@ public class Good implements Serializable {
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
+		if (obj instanceof Good)
+			return true;
 		if (obj == null)
 			return false;
 		if (getClass() != obj.getClass())
@@ -169,12 +177,20 @@ public class Good implements Serializable {
 			return false;
 		return true;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "Good [id=" + id + ", name=" + name + ", description="
 				+ description + ", shortDescription=" + shortDescription
 				+ ", quantity=" + quantity + ", price=" + price + "]";
+	}
+
+	public ShoppingCart getShoppingCart() {
+		return shoppingCart;
+	}
+
+	public void setShoppingCart(ShoppingCart shoppingCart) {
+		this.shoppingCart = shoppingCart;
 	}
 
 }

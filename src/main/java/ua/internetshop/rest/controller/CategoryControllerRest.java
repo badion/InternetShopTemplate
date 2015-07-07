@@ -38,7 +38,7 @@ public class CategoryControllerRest {
 	public @ResponseBody List<Category> getAllCategories() {
 		List<Category> categories = (List<Category>) categoryRepository
 				.findAll();
-		Hibernate.initialize(categories);
+		Hibernate.initialize(categories); 	//fetching the target entity if nessessary
 		if (categories.isEmpty())
 			throw new AbsentCategories();
 		return categories;

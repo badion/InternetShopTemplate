@@ -18,8 +18,11 @@
 	<context:component-scan base-package="ua.internetshop.service.impl" />
 
 	<jpa:repositories base-package="ua.internetshop.repository" />
-	
+
 	<context:component-scan base-package="ua.internetshop.validator" />
+
+	<bean id="shoppingCart" class="ua.internetshop.model.ShoppingCart" />
+	<bean id="customer" class="ua.internetshop.model.Customer" />
 
 	<tx:annotation-driven />
 

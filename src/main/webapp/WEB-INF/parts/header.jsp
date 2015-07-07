@@ -1,4 +1,5 @@
 <!-- Header -->
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <div id="header">
 	<div class="container">
 		<!-- Logo -->
@@ -15,6 +16,8 @@
 				<li><a href="/InternetShop/categories">Categories</a></li>
 				<li><a href="#">Right Sidebar</a></li>
 				<li><a href="#">No Sidebar</a></li>
+				<li id="shoppingCart" style="margin-left: 550px">Shopping cart
+					(${fn:length(shoppingCart.goods)})</li>
 			</ul>
 		</nav>
 	</div>
