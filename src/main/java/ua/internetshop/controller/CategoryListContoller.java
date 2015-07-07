@@ -1,5 +1,6 @@
 package ua.internetshop.controller;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
@@ -22,7 +23,9 @@ import ua.internetshop.utils.UrlRestUtil;
 import ua.internetshop.validator.CategoryValidator;
 
 @Controller
-public class CategoryListContoller {
+public class CategoryListContoller implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	private static final String ID = "id";
 

@@ -10,6 +10,8 @@ public class JspNamesUtil {
 
 	public static final String REDIRECT_HOME = "redirect:/";
 
+	public static final String SHOPPING_CART_PAGE = "shopping_cart";
+	
 	public static final String GOODS_BY_CATEGORY = "goods_by_category";
 
 	public static final String GOODS_BY_CATEGORY_NEW = "good_by_category_new";

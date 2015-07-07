@@ -1,5 +1,6 @@
 package ua.internetshop.controller;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
@@ -10,91 +11,78 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
 
 import ua.internetshop.model.Customer;
 import ua.internetshop.model.Good;
 import ua.internetshop.model.ShoppingCart;
 import ua.internetshop.model.enumeration.OrderedStatus;
-import ua.internetshop.repository.CategoryRepository;
 import ua.internetshop.repository.GoodsRepository;
-import ua.internetshop.repository.ShoppingCartRepository;
+import ua.internetshop.utils.JspNamesUtil;
 
 @Controller
+@RequestMapping(value = "/shopping-cart")
 @Scope("session")
-public class ShoppingCartController {
+public class ShoppingCartController implements Serializable {
+
+	private static final String ID = "id";
+
+	private static final String CUSTOMER = "customer";
+
+	private static final String DELETE_ID = "/delete/{id}";
+
+	private static final String SHOPPING_CART = "shoppingCart";
+
+	private static final String ORDER_NOW_ID = "/orderNow/{id}";
+
+	private static final long serialVersionUID = 1L;
 
 	@Autowired
 	private GoodsRepository goodRepository;
 
 	@Autowired
-	private CategoryRepository categoryRepository;
-
-	@Autowired
-	private ShoppingCartRepository shoppingCartRepository;
-
-	@Autowired
 	private ShoppingCart shoppingCart;
 
-	@Autowired
-	private Customer customer;
-
-	private List<Good> goods;
-
+	private Double totalPrice;
 	
-	@RequestMapping(value = "/categories/{id}/goods/{idGood}/shopping-cart", method = RequestMethod.GET)
-	public ModelAndView shoppingCartForCurrentGood(@PathVariable("id") Long id,
-			@PathVariable("idGood") Long idGood, ModelAndView modelAndView,
-			HttpServletRequest request) {
-
-		Good good = goodRepository.findOne(idGood);
-
-		if (isShoppingCartIsEmpty(request)) { // null shoppingCart in session
-			if (isUserEmptyInSession(request)) { // null customer in session
-				goods = new ArrayList<>();
-				goods.add(good);
-				shoppingCart.setCustomer(customer);
-				shoppingCart.setCount(1);
-				shoppingCart.setDate(new Timestamp(new Date().getTime()));
-				shoppingCart.setGoods(goods);
-				shoppingCart.setOrderedStatus(OrderedStatus.PROCESSED);
-				request.getSession().setAttribute("shoppingCart", shoppingCart);
-			} else {
-				customer = (Customer) request.getSession().getAttribute(
-						"customer");
-				goods = new ArrayList<>();
-				goods.add(good);
-				shoppingCart.setCustomer(customer);
-				shoppingCart.setCount(1);
-				shoppingCart.setDate(new Timestamp(new Date().getTime()));
-				shoppingCart.setGoods(goods);
-				shoppingCart.setOrderedStatus(OrderedStatus.PROCESSED);
-				request.getSession().setAttribute("shoppingCart", shoppingCart);
-			}
+	@RequestMapping(method = RequestMethod.GET)
+	public String getShoppingCartFromSession() {
+		return JspNamesUtil.SHOPPING_CART_PAGE;
+	}
+	
+	@RequestMapping(value = ORDER_NOW_ID, method = RequestMethod.GET)
+	public String orderNow(@PathVariable(ID) Long id, ModelMap modelMap, HttpServletRequest request) {
+		if (request.getSession().getAttribute(SHOPPING_CART) == null) {
+			List<Good> goods = new ArrayList<>();
+			goods.add(goodRepository.findOne(id));
+			checkCustomer(request);
+			shoppingCart.setGoods(goods);
+			shoppingCart.setDate(new Timestamp(new Date().getTime()));
+			shoppingCart.setCount(1);
+			shoppingCart.setOrderedStatus(OrderedStatus.PROCESSED);
+			request.getSession().setAttribute(SHOPPING_CART, shoppingCart);
 		} else {
-			shoppingCart = (ShoppingCart) request.getSession().getAttribute(
-					"shoppingCart");
+			shoppingCart = (ShoppingCart) request.getSession().getAttribute(SHOPPING_CART);
+			shoppingCart.getGoods().add(goodRepository.findOne(id));
 			shoppingCart.setCount(shoppingCart.getCount() + 1);
-			shoppingCart.getGoods().add(good);
-			request.getSession().setAttribute("shoppingCart", shoppingCart);
+			request.getSession().setAttribute(SHOPPING_CART, shoppingCart);
 		}
-
-		modelAndView.setViewName("shopping_cart");
-
-		return modelAndView;
-	}
-	
-	private boolean isShoppingCartIsEmpty(HttpServletRequest request) {
-		return request.getSession().getAttribute("shoppingCart") == null ? true
-				: false;
+		return JspNamesUtil.SHOPPING_CART_PAGE;
 	}
 
-	private boolean isUserEmptyInSession(HttpServletRequest request) {
-		return request.getSession().getAttribute("customer") == null ? true
-				: false;
+	@RequestMapping(value = DELETE_ID, method = RequestMethod.GET)
+	public String deleteProductFromCart(@PathVariable(ID) Long id, HttpServletRequest request) {
+		shoppingCart = (ShoppingCart) request.getSession().getAttribute(SHOPPING_CART);
+		shoppingCart.getGoods().removeIf(good -> good.getId().equals(id));
+		return JspNamesUtil.SHOPPING_CART_PAGE;
 	}
 
+	private void checkCustomer(HttpServletRequest request) {
+		if (request.getSession().getAttribute(CUSTOMER) != null) {
+			shoppingCart.setCustomer((Customer) request.getSession().getAttribute(CUSTOMER));
+		}
+	}
 }

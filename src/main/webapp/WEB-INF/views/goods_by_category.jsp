@@ -12,17 +12,6 @@
 	src="<%=request.getContextPath()%>/static/js/jquery-1.11.3.min.js"></script>
 <script src="<%=request.getContextPath()%>/static/js/bootstrap.js"></script>
 
-<script type="text/javascript">
-	function addToShoppingCart() {
-		$.ajax({
-			url : 'http://localhost:8080/InternetShop/categories/1/goods/',
-			success : function(data) {
-				$('#header').html(data);
-			}
-		});
-	}
-</script>
-
 </head>
 <body>
 	<jsp:include page="../parts/header.jsp" />
@@ -52,32 +41,12 @@
 								<a href="" class="btn btn-danger" data-toggle="modal"
 									data-target="#confirm-delete"
 									data-href="<c:url value='/categories/${category[iterationCat.index].id}/goods/${category[iterationCat.index].goods[iterationGood.index].id}/delete'/>">Delete</a>
-								<a id="cart-modal"
-									data-href="<c:url value='/categories/${category[iterationCat.index].id}/goods/${category[iterationCat.index].goods[iterationGood.index].id}/shopping-cart'/>"
-									href="" class="btn btn-success">Add to cart</a>
+								<a href="/InternetShop/shopping-cart/orderNow/${good.id}"
+									class="btn btn-primary">Order now</a>
 							</section>
 						</div>
 					</c:forEach>
 				</c:if>
-				<div class="modal fade" id="cart-modal" tabindex="-1" role="dialog"
-					aria-labelledby="myModalLabel" aria-hidden="true">
-					<div class="modal-dialog">
-						<div class="modal-content">
-							<div class="modal-header">Корзина</div>
-							<div class="modal-body">
-								Lists of checkout products:
-								<p class="debug-url"></p>
-							</div>
-							<div class="modal-footer">
-								<button type="button" class="btn btn-default"
-									data-dismiss="modal">Cancel</button>
-								<a class="btn btn-primary btn-primary">Order</a>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="contentPlaceHolder">lala</div>
-
 				<div class="modal fade" id="confirm-delete" tabindex="-1"
 					role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 					<div class="modal-dialog">

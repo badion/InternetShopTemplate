@@ -16,8 +16,9 @@
 				<li><a href="/InternetShop/categories">Categories</a></li>
 				<li><a href="#">Right Sidebar</a></li>
 				<li><a href="#">No Sidebar</a></li>
-				<li id="shoppingCart" style="margin-left: 550px">Shopping cart
-					(${fn:length(shoppingCart.goods)})</li>
+				<li id="shoppingCart" style="margin-left: 550px"><a
+					href="/InternetShop/shopping-cart">Shopping cart
+						(${fn:length(shoppingCart.goods)})</a></li>
 			</ul>
 		</nav>
 	</div>

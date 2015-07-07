@@ -11,7 +11,6 @@
 <script
 	src="<%=request.getContextPath()%>/static/js/jquery-1.11.3.min.js"></script>
 <script src="<%=request.getContextPath()%>/static/js/bootstrap.js"></script>
-
 <html>
 <body>
 	<jsp:include page="../parts/header.jsp" />
@@ -19,7 +18,12 @@
 		<div class="row">
 			<c:forEach var="good" items="${shoppingCart.goods}">
 				<div class=col-md-4>
-					<p>${good.name}</p>
+					<p>
+						<a href="/InternetShop/shopping-cart/delete/${good.id}">Delete</a>
+					</p>
+					<p>Name: ${good.name}</p>
+					<p>Quantity: ${good.quantity}</p>
+					<p>Price: ${good.price}</p>
 					<p>
 						<a href="#"><img
 							src="<%=request.getContextPath()%>/static/images/pics13.jpg"
@@ -28,6 +32,7 @@
 					<p class="subtitle">${good.description}</p>
 				</div>
 			</c:forEach>
+			<p>Total price:</p>
 		</div>
 	</div>
 </body>
