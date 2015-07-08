@@ -49,8 +49,7 @@ public class CategoryListContoller implements Serializable {
 
 	@RequestMapping(value = CATEGORIES)
 	public ModelAndView getCategories(ModelAndView model) {
-		List<Category> categories = Arrays.asList(restTemplate.getForObject(
-				UrlRestUtil.LIST_OF_CATEGORIES, Category[].class));
+		List<Category> categories = Arrays.asList(restTemplate.getForObject(UrlRestUtil.LIST_OF_CATEGORIES, Category[].class));
 		model.addObject(CATEGORY, categories);
 		model.setViewName(JspNamesUtil.CATEGORIES);
 		return model;
@@ -63,8 +62,7 @@ public class CategoryListContoller implements Serializable {
 	}
 
 	@RequestMapping(value = CATEGORIES_ADD_DO, method = RequestMethod.POST)
-	public String addCategoryAction(@Valid Category category,
-			BindingResult bindingResult, Model model) {
+	public String addCategoryAction(@Valid Category category, BindingResult bindingResult, Model model) {
 
 		categoryValidator.validate(category, bindingResult);
 		if (bindingResult.hasErrors()) {

@@ -30,9 +30,9 @@ public class Country {
 	@Column(name = "postal_code")
 	private String postalCode;
 
-	@OneToOne(fetch=FetchType.LAZY, mappedBy="country")
+	@OneToOne(fetch = FetchType.LAZY, mappedBy = "country")
 	private Customer customer;
-	
+
 	public String getCountryName() {
 		return countryName;
 	}

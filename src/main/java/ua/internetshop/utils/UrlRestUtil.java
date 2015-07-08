@@ -2,7 +2,6 @@ package ua.internetshop.utils;
 
 public class UrlRestUtil {
 
-
 	public static final String DELETE_CATEGORY = "http://localhost:8080/InternetShop/rest/category/delete/";
 
 	public static final String DELETE_GOOD = "http://localhost:8080/InternetShop/rest/goods/delete/";

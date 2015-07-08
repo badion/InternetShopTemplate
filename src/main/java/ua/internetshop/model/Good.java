@@ -45,7 +45,7 @@ public class Good implements Serializable {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	private ShoppingCart shoppingCart;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "category_id")
 	private Category category;
@@ -111,18 +111,13 @@ public class Good implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result
-				+ ((category == null) ? 0 : category.hashCode());
-		result = prime * result
-				+ ((description == null) ? 0 : description.hashCode());
+		result = prime * result + ((category == null) ? 0 : category.hashCode());
+		result = prime * result + ((description == null) ? 0 : description.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((price == null) ? 0 : price.hashCode());
-		result = prime * result
-				+ ((quantity == null) ? 0 : quantity.hashCode());
-		result = prime
-				* result
-				+ ((shortDescription == null) ? 0 : shortDescription.hashCode());
+		result = prime * result + ((quantity == null) ? 0 : quantity.hashCode());
+		result = prime * result + ((shortDescription == null) ? 0 : shortDescription.hashCode());
 		return result;
 	}
 
@@ -177,9 +172,8 @@ public class Good implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Good [id=" + id + ", name=" + name + ", description="
-				+ description + ", shortDescription=" + shortDescription
-				+ ", quantity=" + quantity + ", price=" + price + "]";
+		return "Good [id=" + id + ", name=" + name + ", description=" + description + ", shortDescription=" + shortDescription + ", quantity=" + quantity + ", price=" + price
+				+ "]";
 	}
 
 	public ShoppingCart getShoppingCart() {

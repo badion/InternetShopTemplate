@@ -17,8 +17,7 @@ public class CategoryValidator implements Validator {
 
 	@Override
 	public void validate(Object obj, Errors errors) {
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name",
-				"name.required");
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "name.required");
 	}
 
 }

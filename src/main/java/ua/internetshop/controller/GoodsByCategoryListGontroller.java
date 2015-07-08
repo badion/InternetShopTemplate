@@ -65,11 +65,9 @@ public class GoodsByCategoryListGontroller implements Serializable {
 	private final RestTemplate restTemplate = new RestTemplate();
 
 	@RequestMapping(value = CATEGORIES_ID_GOODS, method = RequestMethod.GET)
-	public ModelAndView goodsByCategory(@PathVariable(ID) Integer id,
-			ModelAndView model) {
+	public ModelAndView goodsByCategory(@PathVariable(ID) Integer id, ModelAndView model) {
 
-		List<Category> categories = Arrays.asList(restTemplate.getForObject(
-				UrlRestUtil.CATEGORY_ID + id, Category.class));
+		List<Category> categories = Arrays.asList(restTemplate.getForObject(UrlRestUtil.CATEGORY_ID + id, Category.class));
 		if (!categories.isEmpty()) {
 			model.addObject(CATEGORY, categories);
 			model.addObject(GOOD, new Good());
@@ -86,16 +84,13 @@ public class GoodsByCategoryListGontroller implements Serializable {
 	}
 
 	@RequestMapping(value = CATEGORIES_ID_GOODS_ADD_DO, method = RequestMethod.POST)
-	public String addGoodAction(@Valid @ModelAttribute Good good,
-			@PathVariable(ID) Integer id, BindingResult bindingResult,
-			Model model) {
+	public String addGoodAction(@Valid @ModelAttribute Good good, @PathVariable(ID) Integer id, BindingResult bindingResult, Model model) {
 
 		goodValidator.validate(good, bindingResult);
 		if (bindingResult.hasErrors()) {
 			return JspNamesUtil.GOODS_BY_CATEGORY;
 		} else {
-			Category category = restTemplate.getForObject(
-					UrlRestUtil.LIST_OF_CATEGORIES + "/" + id, Category.class);
+			Category category = restTemplate.getForObject(UrlRestUtil.LIST_OF_CATEGORIES + "/" + id, Category.class);
 
 			// need to modify
 
@@ -114,8 +109,7 @@ public class GoodsByCategoryListGontroller implements Serializable {
 	}
 
 	@RequestMapping(value = CATEGORIES_ID_GOODS_ID_GOOD, method = RequestMethod.GET)
-	public ModelAndView getGoodPage(@PathVariable(ID) Long id,
-			@PathVariable(ID_GOOD) Long idGood, ModelAndView modelAndView) {
+	public ModelAndView getGoodPage(@PathVariable(ID) Long id, @PathVariable(ID_GOOD) Long idGood, ModelAndView modelAndView) {
 		Good good = goodRepository.findOne(idGood);
 		Category category = categoryRepository.findOne(id);
 		modelAndView.addObject(GOOD, good);
@@ -125,10 +119,8 @@ public class GoodsByCategoryListGontroller implements Serializable {
 	}
 
 	@RequestMapping(value = CATEGORIES_ID_GOODS_ID_GOOD_DELETE, method = RequestMethod.GET)
-	public String deleteProduct(@PathVariable(ID) Long id,
-			@PathVariable(ID_GOOD) Long idGood, Model model) {
-		restTemplate.delete(UrlRestUtil.LIST_OF_CATEGORIES + id + GOODS
-				+ idGood + DELETE);
+	public String deleteProduct(@PathVariable(ID) Long id, @PathVariable(ID_GOOD) Long idGood, Model model) {
+		restTemplate.delete(UrlRestUtil.LIST_OF_CATEGORIES + id + GOODS + idGood + DELETE);
 		model.addAttribute("ca", categoryRepository.findOne(id));
 		return JspNamesUtil.REDIRECT_CATEGORIES + id + GOODS;
 	}

@@ -15,12 +15,16 @@ import ua.internetshop.repository.ShoppingCartRepository;
 @RequestMapping(value = ShoppingCartControllerRest.REST)
 public class ShoppingCartControllerRest {
 
+	private static final String SHOPPING_CART = "/shopping-cart";
+
+	private static final String ACCEPT_APPLICATION_JSON = "accept=application/json";
+
 	static final String REST = "/rest";
 
 	@Autowired
 	private ShoppingCartRepository shoppingCartRepository;
 
-	@RequestMapping(value = "/shopping-cart", method = RequestMethod.GET, headers = "accept=application/json")
+	@RequestMapping(value = SHOPPING_CART, method = RequestMethod.GET, headers = ACCEPT_APPLICATION_JSON)
 	public @ResponseBody List<ShoppingCart> getAllShoppingCart() {
 		List<ShoppingCart> shoppingCarts = (List<ShoppingCart>) shoppingCartRepository
 				.findAll();

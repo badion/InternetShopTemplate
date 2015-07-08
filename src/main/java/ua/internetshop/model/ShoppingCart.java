@@ -33,20 +33,20 @@ public class ShoppingCart implements Serializable {
 
 	@Column(name = "count")
 	private Integer count;
-	
+
 	@Column(name = "ordered_date")
 	private Timestamp date;
-	
+
 	@OneToMany(mappedBy = "shoppingCart", fetch = FetchType.EAGER, cascade = { CascadeType.ALL }, orphanRemoval = true)
 	private List<Good> goods;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_customer")
 	private Customer customer;
-	
+
 	@Enumerated(EnumType.STRING)
 	private OrderedStatus orderedStatus;
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -97,10 +97,7 @@ public class ShoppingCart implements Serializable {
 
 	@Override
 	public String toString() {
-		return "ShoppingCart [id=" + id + ", count=" + count + ", date=" + date
-				+ ", goods=" + goods + ", customer=" + customer
-				+ ", orderedStatus=" + orderedStatus + "]";
+		return "ShoppingCart [id=" + id + ", count=" + count + ", date=" + date + ", goods=" + goods + ", customer=" + customer + ", orderedStatus=" + orderedStatus + "]";
 	}
-	
-	
+
 }

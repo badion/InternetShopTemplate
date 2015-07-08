@@ -24,19 +24,21 @@ import ua.internetshop.repository.GoodsRepository;
 import ua.internetshop.utils.JspNamesUtil;
 
 @Controller
-@RequestMapping(value = "/shopping-cart")
+@RequestMapping(value = ShoppingCartController.SHOPPING_CART_MAP_PAGE)
 @Scope("session")
 public class ShoppingCartController implements Serializable {
 
-	private static final String ID = "id";
+	static final String SHOPPING_CART_MAP_PAGE = "/shopping-cart";
 
-	private static final String CUSTOMER = "customer";
+	private static final String ID = "id";
 
 	private static final String DELETE_ID = "/delete/{id}";
 
-	private static final String SHOPPING_CART = "shoppingCart";
-
 	private static final String ORDER_NOW_ID = "/orderNow/{id}";
+
+	private static final String TOTAL_SUM = "totalSum";
+
+	private static final String SHOPPING_CART = "shoppingCart";
 
 	private static final long serialVersionUID = 1L;
 
@@ -46,13 +48,11 @@ public class ShoppingCartController implements Serializable {
 	@Autowired
 	private ShoppingCart shoppingCart;
 
-	private Double totalPrice;
-	
 	@RequestMapping(method = RequestMethod.GET)
 	public String getShoppingCartFromSession() {
 		return JspNamesUtil.SHOPPING_CART_PAGE;
 	}
-	
+
 	@RequestMapping(value = ORDER_NOW_ID, method = RequestMethod.GET)
 	public String orderNow(@PathVariable(ID) Long id, ModelMap modelMap, HttpServletRequest request) {
 		if (request.getSession().getAttribute(SHOPPING_CART) == null) {
@@ -70,19 +70,27 @@ public class ShoppingCartController implements Serializable {
 			shoppingCart.setCount(shoppingCart.getCount() + 1);
 			request.getSession().setAttribute(SHOPPING_CART, shoppingCart);
 		}
+
+		modelMap.addAttribute(TOTAL_SUM, priceTotalSum());
+
 		return JspNamesUtil.SHOPPING_CART_PAGE;
 	}
 
 	@RequestMapping(value = DELETE_ID, method = RequestMethod.GET)
-	public String deleteProductFromCart(@PathVariable(ID) Long id, HttpServletRequest request) {
+	public String deleteProductFromCart(@PathVariable(ID) Long id, ModelMap modelMap, HttpServletRequest request) {
 		shoppingCart = (ShoppingCart) request.getSession().getAttribute(SHOPPING_CART);
 		shoppingCart.getGoods().removeIf(good -> good.getId().equals(id));
+		modelMap.addAttribute(TOTAL_SUM, priceTotalSum());
 		return JspNamesUtil.SHOPPING_CART_PAGE;
 	}
 
 	private void checkCustomer(HttpServletRequest request) {
-		if (request.getSession().getAttribute(CUSTOMER) != null) {
-			shoppingCart.setCustomer((Customer) request.getSession().getAttribute(CUSTOMER));
+		if (request.getSession().getAttribute("customer") != null) {
+			shoppingCart.setCustomer((Customer) request.getSession().getAttribute("customer"));
 		}
+	}
+
+	private double priceTotalSum() {
+		return shoppingCart.getGoods().stream().mapToDouble(good -> good.getPrice()).sum();
 	}
 }

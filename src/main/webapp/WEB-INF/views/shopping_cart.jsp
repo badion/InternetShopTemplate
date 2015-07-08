@@ -32,7 +32,7 @@
 					<p class="subtitle">${good.description}</p>
 				</div>
 			</c:forEach>
-			<p>Total price:</p>
+			<p>Total price: ${totalSum}</p>
 		</div>
 	</div>
 </body>

@@ -17,11 +17,8 @@ public class GoodValidator implements Validator {
 
 	@Override
 	public void validate(Object obj, Errors errors) {
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name",
-				"good.name.required");
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "quantity",
-				"good.quantity.required");
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "price",
-				"good.price.required");
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "good.name.required");
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "quantity", "good.quantity.required");
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "price", "good.price.required");
 	}
 }
