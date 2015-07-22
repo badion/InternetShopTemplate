@@ -13,6 +13,9 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<spring.version>4.1.6.RELEASE</spring.version>
+		<spring.security.version>4.0.1.RELEASE</spring.security.version>
+		<spring-social-facebook.version>2.0.1.RELEASE</spring-social-facebook.version>
+		<spring-social-core-version>1.1.2.RELEASE</spring-social-core-version>
 		<jstl.version>1.2</jstl.version>
 	</properties>
 
@@ -35,6 +38,42 @@
 			<version>2.5.3</version>
 		</dependency>
 
+		<!-- Spring Social Facebook -->
+		<dependency>
+			<groupId>org.springframework.social</groupId>
+			<artifactId>spring-social-facebook</artifactId>
+			<version>1.1.1.RELEASE</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.social</groupId>
+			<artifactId>spring-social-facebook-web</artifactId>
+			<version>2.0.1.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.social</groupId>
+			<artifactId>spring-social-core</artifactId>
+			<version>${spring-social-core-version}</version>
+		</dependency>
+
+		<!-- Spring Security -->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-web</artifactId>
+			<version>${spring.security.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-config</artifactId>
+			<version>${spring.security.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-core</artifactId>
+			<version>${spring.security.version}</version>
+		</dependency>
 
 
 		<!-- Spring dependencies -->
@@ -109,6 +148,12 @@
 			<artifactId>jstl</artifactId>
 			<version>${jstl.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>javax.servlet.jsp</groupId>
+			<artifactId>jsp-api</artifactId>
+			<version>2.2</version>
+		</dependency>
+
 
 		<!-- OTHER -->
 		<dependency>
@@ -130,7 +175,7 @@
 		</dependency>
 
 	</dependencies>
-
+	<!-- Apache Http Client -->
 	<build>
 		<finalName>InternetShop</finalName>
 		<plugins>

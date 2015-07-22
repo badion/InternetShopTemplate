@@ -15,7 +15,7 @@
 	<jsp:body>
 	<div class="container">
 		<div class="row">
-			<c:forEach var="categ" items="${category}">
+			<c:forEach var="categ" items="${paginatorCategories}">
 				<div class="col m6 l4">
 						<header>
 							<h4>${categ.name}</h4>
@@ -34,11 +34,25 @@
 				</div>
 				</c:forEach>
 		</div>
-		</div>
-		<div class="center-btn">
+		<div class="center-btn"> 
+		<ul class="pagination"> 
+			<li class="waves-effect"><a onclick="decriment_page();"><i
+							class="material-icons">chevron_left</i></a></li>
+			<c:forEach var="i" begin="1" end="${pagesAmount}">
+				<li class="waves-effect"><a
+							href="/InternetShop/categories/page/${i}">${i}</a></li>
+			</c:forEach>
+			<li class="waves-effect"><a onclick="increment_page();"><i
+							class="material-icons">chevron_right</i></a></li>
+				</ul>
 		 <a href="<c:url value='/categories/add'/>"
-				class="btn-floating btn-large waves-effect waves-light red"><i
-				class="material-icons">add</i></a>
-		</div>
+					class="btn-floating btn-large waves-effect waves-light red"><i
+					class="material-icons">add</i></a>
+		</div>  
+			</div>
+				<div class="center-btn">
+				<a class="waves-effect waves-light btn"
+				href="/InternetShop/categories">Show all</a>
+			</div>
     </jsp:body>
 </t:genericpage>

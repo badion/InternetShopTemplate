@@ -85,7 +85,6 @@ public class GoodsByCategoryListGontroller implements Serializable {
 
 	@RequestMapping(value = CATEGORIES_ID_GOODS_ADD_DO, method = RequestMethod.POST)
 	public String addGoodAction(@Valid @ModelAttribute Good good, @PathVariable(ID) Integer id, BindingResult bindingResult, Model model) {
-
 		goodValidator.validate(good, bindingResult);
 		if (bindingResult.hasErrors()) {
 			return JspNamesUtil.GOODS_BY_CATEGORY;

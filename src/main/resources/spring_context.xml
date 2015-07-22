@@ -3,19 +3,28 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+	xmlns:twitter="http://www.springframework.org/schema/social/twitter"
+	xmlns:social="http://www.springframework.org/schema/social"
+	xmlns:facebook="http://www.springframework.org/schema/social/facebook"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	
     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
     http://www.springframework.org/schema/context
     http://www.springframework.org/schema/context/spring-context-3.0.xsd
     http://www.springframework.org/schema/tx
     http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
     http://www.springframework.org/schema/data/jpa
-    http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
-
-	<context:annotation-config />
+    http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+          http://www.springframework.org/schema/social http://www.springframework.org/schema/social/spring-social.xsd
+       http://www.springframework.org/schema/social/twitter http://www.springframework.org/schema/social/spring-social-twitter.xsd
+       http://www.springframework.org/schema/social/facebook http://www.springframework.org/schema/social/spring-social-facebook.xsd">
 
 	<context:component-scan base-package="ua.internetshop.dao.impl" />
 	<context:component-scan base-package="ua.internetshop.service.impl" />
+
+	<bean id="facebook"
+		class="org.springframework.social.facebook.api.impl.FacebookTemplate"></bean>
+
 
 	<jpa:repositories base-package="ua.internetshop.repository" />
 

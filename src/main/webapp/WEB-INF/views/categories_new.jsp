@@ -1,22 +1,22 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@page session="true"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<html>
-<head>
-<title>Add new category</title>
-<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-<link type="text/css"
-	href="<%=request.getContextPath()%>/static/css/bootstrap.css"
-	rel="stylesheet" />
-<script
-	src="<%=request.getContextPath()%>/static/js/jquery-1.11.3.min.js"></script>
-<script src="<%=request.getContextPath()%>/static/js/bootstrap.js"></script>
-</head>
-<body>
-	<jsp:include page="../parts/header.jsp"></jsp:include>
-	<div class="container">
-		<form:form name="categoryForm" commandName="category" action="add.do"
-			method="POST">
+<%@ taglib uri="http://www.springframework.org/tags/form"
+	prefix="springForm"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<t:genericpage>
+	<jsp:attribute name="header">
+		<jsp:include page="../parts/header.jsp" />
+    </jsp:attribute>
+	<jsp:attribute name="footer">
+  	 	<jsp:include page="../parts/footer.jsp" />
+    </jsp:attribute>
+	<jsp:body>
+		<div class="container">
+		<form:form name="categoryForm" id="categoryForm"
+				commandName="category" action="add.do" method="POST">
 			<table class="table-responsive">
 				<tr>
 					<td>Name of category</td>
@@ -25,10 +25,10 @@
 				</tr>
 				<tr>
 					<td colspan="3"><input type="submit" class="btn btn-success"
-						value="Save category"></td>
+							value="Save category" required></td>
 				</tr>
 			</table>
 		</form:form>
 	</div>
-</body>
-</html>
+	</jsp:body>
+</t:genericpage>

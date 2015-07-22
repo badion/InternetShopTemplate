@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Resource;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import ua.internetshop.model.Category;
 import ua.internetshop.repository.CategoryRepository;
+import ua.internetshop.service.impl.CategoryService;
 import ua.internetshop.utils.JspNamesUtil;
 import ua.internetshop.utils.UrlRestUtil;
 import ua.internetshop.validator.CategoryValidator;
@@ -44,14 +46,32 @@ public class CategoryListContoller implements Serializable {
 	@Autowired
 	private CategoryRepository categoryRepository;
 
+	@Resource
+	private CategoryService categoryService;
+
 	@Autowired
 	private CategoryValidator categoryValidator;
 
 	@RequestMapping(value = CATEGORIES)
 	public ModelAndView getCategories(ModelAndView model) {
 		List<Category> categories = Arrays.asList(restTemplate.getForObject(UrlRestUtil.LIST_OF_CATEGORIES, Category[].class));
+
 		model.addObject(CATEGORY, categories);
 		model.setViewName(JspNamesUtil.CATEGORIES);
+		return model;
+	}
+
+	@RequestMapping(value = "/categories/page/{pageNumber}", method = RequestMethod.GET)
+	public ModelAndView categories(@PathVariable Integer pageNumber, ModelAndView model) {
+		List<Category> categories = categoryService.categories(pageNumber);
+		List<Category> allCategories = Arrays.asList(restTemplate.getForObject(UrlRestUtil.LIST_OF_CATEGORIES, Category[].class));
+
+		Double amountPages = Math.ceil((double) allCategories.size() / categoryService.NUMBER_OF_PERSONS_PER_PAGE);
+
+		model.addObject("pagesAmount", amountPages);
+		model.addObject("allCategories", Arrays.asList(restTemplate.getForObject(UrlRestUtil.LIST_OF_CATEGORIES, Category[].class)));
+		model.addObject("paginatorCategories", categories);
+		model.setViewName("categories_per_page");
 		return model;
 	}
 
@@ -77,6 +97,6 @@ public class CategoryListContoller implements Serializable {
 	@RequestMapping(value = CATEGORIES_DELETE_ID, method = RequestMethod.GET)
 	public String deleteCategory(@PathVariable(ID) Long id) {
 		restTemplate.delete(UrlRestUtil.DELETE_CATEGORY + id);
-		return JspNamesUtil.REDIRECT_HOME;
+		return "redirect:/categories/page/" + 1;
 	}
 }

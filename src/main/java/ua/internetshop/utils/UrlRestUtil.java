@@ -13,5 +13,7 @@ public class UrlRestUtil {
 	public static final String CATEGORY_ID = "http://localhost:8080/InternetShop/rest/category/";
 
 	public static final String GOODS_ID = "http://localhost:8080/InternetShop/rest/goods/";
+	
+	public static final String CATEGORY_PAGE_ID = "http://localhost:8080/InternetShop/categories/page/";
 
 }
